@@ -14,6 +14,9 @@ $breakpoints: (
   @if ($lower and map_has_key($breakpoints, $lower)) {
     $media: $media + " and (min-width: " + (map-get($breakpoints, $lower) + 1) + ")";
   }
+  @if ($upper and map_has_key($breakpoints, $upper)) {
+    $media: $media + " and (max-width: " + map-get($breakpoints, $upper) + ")";
+  }
   @media #{$media} {
     @content;
   }
