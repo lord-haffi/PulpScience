@@ -1,4 +1,20 @@
-$palette: (
-  bg-all: rgb(27, 27, 27),
-  bg-bio: rgb(0, 55, 13)
+$bg-all: rgb(27, 27, 27);
+$bg-bio: rgb(0, 55, 13);
+$fg-all: rgb(230, 230, 230);
+
+$breakpoints: (
+        xl:  1680px,
+        l:   1280px,
+        m:   980px,
+        s:   736px,
+        xs:  480px
 );
+@mixin breakpoint ($lower: null, $upper: null) {
+  $media: "screen";
+  @if ($lower and map_has_key($breakpoints, $lower)) {
+    $media: $media + " and (min-width: " + (map-get($breakpoints, $lower) + 1) + ")";
+  }
+  @media #{$media} {
+    @content;
+  }
+}
