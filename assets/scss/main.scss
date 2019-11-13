@@ -1,5 +1,6 @@
-@import 'vars';
+@import "libs/vars";
+@import "libs/vendor";
 
-@import 'base/page';
+@import "base/page";
 
-@import 'components/timeline';
+@import "components/timeline";
