@@ -1,0 +1,135 @@
+body {
+  background-color: _palette('bg');
+  color: _palette('fg');
+  font: 300 15pt 'Source Sans Pro', sans-serif;
+  line-height: 1.85em;
+}
+
+
+a {
+  text-decoration: underline;
+  cursor: pointer;
+  border-radius: 0.3em;
+
+  @include vendor('transition', (
+      //'background-color 0.3s ease-in-out',
+      'color 0.3s ease-in-out'
+    ));
+
+  &:hover {
+    color: _palette('link-hover');
+    text-decoration: underline;
+  }
+}
+
+button {
+  padding: _size('padding-btn');
+  color: inherit;
+  font-size: 0.8em;
+  cursor: pointer;
+  background-color: _palette('btn');
+  border: 1px solid _palette('btn');
+  border-radius: 0.3em;
+  @include vendor('transition', (
+      'background-color 0.3s ease-in-out',
+      'border-color 0.3s ease-in-out'
+    ));
+
+  &:hover {
+    background-color: darken(_palette('btn'), 7%);
+    border-color: darken(_palette('btn'), 10%);
+  }
+
+  &.success {
+    background-color: _palette('btn-success');
+    border-color: _palette('btn-success');
+
+    &:hover {
+      background-color: darken(_palette('btn-success'), 7%);
+      border-color: darken(_palette('btn-success'), 10%);
+    }
+  }
+}
+.active {
+  //background-color: darken(_palette('link-hover'), 7%);
+  border: 1px solid darken(_palette('link-hover'), 10%);
+  padding: _size('padding-btn');
+
+  &:hover {
+    color: inherit;
+  }
+}
+
+.link-icon {
+  text-decoration: none;
+  display: block;
+
+  &:hover {
+    text-decoration: none;
+  }
+  & > i {
+    &:before {
+      vertical-align: middle;
+    }
+    & + * {
+      margin-left: _size('menu-sm');
+    }
+  }
+  & > .label {
+    display: none !important;
+  }
+}
+.logo {
+  height: 2em;
+  width: 2em;
+}
+//.logo-svg {
+//  @extend .logo;
+//  & svg {
+//    color: white;
+//  }
+//  & svg path {
+//    @include vendor('transition', (
+//        'fill 0.4s ease-in-out',
+//        'stroke 0.4s ease-in-out',
+//      ));
+//    fill: _palette('link-hover');
+//    stroke: _palette('link-hover');
+//  }
+//}
+
+.footnote {
+  font-size: 0.7em;
+  line-height: 1em;
+  color: _palette('fg-trans');
+  & a {
+
+  }
+}
+
+@include breakpoint('<=wide') {
+  body, input, textarea, select {
+    font-size: 14pt;
+    line-height: 1.75em;
+  }
+}
+@include breakpoint('<=normal') {
+  body, input, textarea, select {
+    font-size: 12pt;
+    line-height: 1.5em;
+  }
+}
+@include breakpoint('<=narrow') {
+}
+@include breakpoint('<=narrower') {
+  body, input, textarea, select {
+    font-size: 13pt;
+    line-height: 1.65em;
+  }
+}
+@include breakpoint('<=mobile') {
+  body, input, textarea, select {
+    font-size: 12.5pt;
+    line-height: 1.5em;
+  }
+}

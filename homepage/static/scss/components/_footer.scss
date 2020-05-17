@@ -1,0 +1,54 @@
+
+
+footer {
+  background-color: _palette('bg-alt');
+  padding: _size('section');
+  @include breakpoint('<=mobile') {
+    padding: _size('section') _size('section-sm');
+  }
+
+  & section {
+    text-align: center;
+    & > div {
+      & > header {
+        font-size: 1.5em;
+        font-weight: 400;
+        margin-bottom: _size('section-sm');
+      }
+      & > p {
+        font-size: 1.2em;
+        margin-bottom: _size('section-sm');
+      }
+      & > .icons {
+        background-color: _palette('bg-hl');
+        border-radius: 3em;
+        padding: 1.2em 2em;
+        cursor: default;
+
+        & .link-icon {
+          font-size: 1.7em;
+        }
+      }
+    }
+    & > .ul-hor {
+      width: 100%;
+    }
+    &.footnote > ul {
+      & > li > ul {
+        width: 30em;
+      }
+
+      @include break() {
+        & > li > ul {
+          width: auto;
+        }
+        & > li:has(.logo) {
+          display: none;
+        }
+        & > li .logo {
+          display: none;
+        }
+      }
+    }
+  }
+}

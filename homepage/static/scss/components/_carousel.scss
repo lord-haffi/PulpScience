@@ -1,0 +1,38 @@
+
+@keyframes carousel-anim {
+  //from { left:   0  ; }
+  //to   { left: -50% ; }
+  from {transform: translateX(0);}
+  to {transform: translateX(-50%);}
+}
+
+.carousel {
+  //position: relative;
+  overflow: hidden;
+
+  & > .carousel-container {
+    display: inline-block;
+    height: 100%;
+    //position: relative;
+    //left: 0;
+    @include vendor('display', 'flex');
+    @include vendor('align-items', 'center');
+
+    & > .carousel-items {
+      display: inline;
+      padding: 0 _size('menu');
+      white-space: nowrap;
+
+      & > .carousel-item {
+        display: inline;
+        margin: _size('menu-sm');
+      }
+    }
+    //&.animate {
+    //  animation-name: carousel-anim;
+    //  animation-duration: 10s;
+    //  animation-timing-function: linear;
+    //  animation-iteration-count: infinite;
+    //}
+  }
+}

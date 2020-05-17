@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>PulpScience</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}" sizes="32x32"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main_base.css' %}">
+    {% block stylesheets %}
+    {% endblock %}
 </head>
 <body>
     {% block content %}

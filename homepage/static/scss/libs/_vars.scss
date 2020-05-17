@@ -1,0 +1,67 @@
+// Misc.
+$misc: (
+	z-index-base:	10000,
+	z-index-drop: 20000
+);
+
+// Duration.
+$duration: (
+	navPanel: 0.5s
+);
+
+// Size.
+$size: (
+	section: 3em,
+	section-sm: 1.2em,
+	menu: 1.5em,
+	menu-m: 1em,
+	menu-sm: 0.5em,
+	padding: 0.4em,
+	padding-btn: 0.35em 0.9em,
+	padding-btn-sm: 0.25em 0.7em,
+	nav-height: 3.3em,
+	nav-height-l: 4.3em,
+	nav-expanded-height: 9em,
+);
+
+// Font.
+$font: (
+);
+
+// Palette.
+$basePalette: (
+	bg: #131313,
+	bg-alt: #2a2a2a,
+	bg-drop: #2a2a2a,
+	bg-drop-light: white, //#2a2a2a,
+	bg-item: #252525,
+	bg-hl: #2f2f2f,
+	fg: #fafafa,
+	fg-trans: rgba(250, 250, 250, 0.5),
+	fg-light: #212529,
+	sep: rgba(128, 128, 128, 0.2),
+	//link-hover: #ef8376,
+
+	btn: #555555,
+	btn-success: #28a745,
+	btn-warning: #ffc107,
+	btn-danger: #dc3545,
+	//btn-danger: #ef8376,
+
+	news-announcement: #694eae,
+);
+$nestedPalette: (
+	link-hover: lighten(map-get($basePalette, 'btn-danger'), 25%),
+	border-drop: darken(map-get($basePalette, 'bg-drop'), 5%),
+	border-drop-light: darken(map-get($basePalette, 'bg-drop-light'), 20%),
+	btn-success-hover: darken(map-get($basePalette, 'btn-success'), 7%),
+	btn-success-hover-b: darken(map-get($basePalette, 'btn-success'), 11%),
+	btn-warning-hover: darken(map-get($basePalette, 'btn-warning'), 11%),
+	btn-warning-hover-b: darken(map-get($basePalette, 'btn-warning'), 16%),
+	btn-danger-hover: darken(map-get($basePalette, 'btn-danger'), 11%),
+	btn-danger-hover-b: darken(map-get($basePalette, 'btn-danger'), 16%),
+	news-new: map_get($basePalette, 'btn-danger'),
+	news-update: map_get($basePalette, 'btn-success'),
+);
+
+$palette: map-merge($basePalette, $nestedPalette);

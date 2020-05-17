@@ -1,0 +1,50 @@
+
+.news {
+  width: 100%;
+  font-size: 1.2em;
+  font-weight: 400;
+  @include vendor('display', 'flex');
+
+  & > header {
+    @include vendor('flex', '1 1 30%');
+    padding: _size('menu');
+    background-color: _palette('btn-warning');
+    color: _palette('fg-light');
+    @include vendor('display', 'inline-flex');
+    @include vendor('justify-content', 'flex-end');
+    @include vendor('align-items', 'center');
+
+    & > h2 {
+      text-align: right; // For very very veeeery small screens
+    }
+  }
+  & > .carousel {
+    @include vendor('flex', '1 1 70%');
+
+    & .carousel-item {
+      & > i {
+        padding: _size('padding-btn');
+        //text-transform: uppercase;
+
+        &.news-item-new {
+          //@include vendor('transition', 'color 0s');
+          background-color: _palette('news-new');
+          //color: inherit;
+        }
+
+        &.news-item-announcement {
+          background-color: _palette('news-announcement');
+        }
+
+        &.news-item-update {
+          background-color: _palette('news-update');
+        }
+      }
+
+      & a.news-item {
+        text-decoration: none;
+        padding: _size('padding-btn');
+      }
+    }
+  }
+}
