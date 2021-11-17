@@ -1,6 +1,6 @@
 
 
-$(function ($) {
+(function ($) {
     $.fn.timedHover = function (fnOver, fnOut, options) {
         let settings = $.extend({
             hoverTimeout: 150,

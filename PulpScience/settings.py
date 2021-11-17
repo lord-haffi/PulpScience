@@ -120,5 +120,5 @@ USE_TZ = True
 STATIC_URL = '/assets/'
 STATIC_ROOT = '/assets/'
 STATICFILES_DIRS = [
-    '/homepage/static',
+    'homepage/static',
 ]

@@ -1,6 +1,6 @@
 "use strict";
 
-$(function ($) {
+(function ($) {
 
     // Only count HTML whitespace
     // Other whitespace should count in values

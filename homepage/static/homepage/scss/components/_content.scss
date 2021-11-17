@@ -1,0 +1,6 @@
+
+#content {
+  @include vendor('flex-grow', '1');
+  padding: _size('section');
+  //width: 100%;
+}

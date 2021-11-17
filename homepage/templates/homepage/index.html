@@ -1,6 +1,79 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{% static 'homepage/css/main_index.css' %}">
+{% endblock %}
+
 {% block content %}
-Hello World
+<div class="nav nav-user">
+    <div class="nav-menu">
+        <ul>
+            <li><a class="link-icon"><i class="fas fa-shopping-bag"></i><span class="label">Store</span></a></li>
+            <li><a>Login</a></li>
+            <li class="dropdown">
+                <a class="link-icon">
+                    <i class="fas fa-globe"></i>
+                    <i class="dropdown-positioner fas fa-sort-down"></i>
+                    <span class="label">Language</span>
+                </a>
+                <div class="dropdown-menu">
+                    <ul>
+                        <li><a>English</a></li>
+                        <li><a>German</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="wrapper">
+    <nav class="nav nav-top" id="sidebar">
+        <header>
+            <a>
+                <img class="logo" src="{% static 'homepage/images/logo.png' %}" alt="Logo" />
+                {% comment %}<object class="logo" data="{% static 'images/logo.png' %}" type="image/svg+xml">
+                    <!-- Browser kann kein SVG darstellen -->
+                    <img class="logo" src="{% static 'images/logo.png' %}" alt="Logo" />
+                </object>{% endcomment %}
+            </a>
+        </header>
+        <div class="nav-menu-collapsible break-narrow">
+            <a class="expander"><i class='fas fa-bars'></i></a>
+            <div class="hide">
+                <ul>
+                    <li><a class="topic-link active">Informatics</a></li>
+                    <li><a class="topic-link">Biology</a></li>
+                    <li><a class="topic-link">Chemistry</a></li>
+                    <li><a class="topic-link">Mathematics</a></li>
+                    <li><a class="topic-link">Physics</a></li>
+                </ul>
+            </div>
+        </div>
+        <footer id="footer" class="break-narrow">
+            <ul class="break-mobile">
+                <li>
+                    <ul>
+                        <li><a>About us</a></li>
+                        <li><a>Contact</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <ul>
+                        <li><a>Terms</a></li>
+                        <li><a>Privacy</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </footer>
+    </nav>
+    <div id="content">
+        Content blabla
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'homepage/js/navbar.js' %}"></script>
+    <script type="text/javascript" src="{% static 'homepage/js/main.js' %}"></script>
 {% endblock %}

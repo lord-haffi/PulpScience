@@ -123,13 +123,13 @@ button {
 }
 @include breakpoint('<=narrower') {
   body, input, textarea, select {
-    font-size: 13pt;
+    font-size: 14pt;
     line-height: 1.65em;
   }
 }
 @include breakpoint('<=mobile') {
   body, input, textarea, select {
-    font-size: 12.5pt;
-    line-height: 1.5em;
+    font-size: 15pt;
+    line-height: 1.75em;
   }
 }
