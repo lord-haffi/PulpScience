@@ -19,7 +19,7 @@
         }
     };
 
-    function alignSpecDefaults (el) {
+    function applySpecDefaults (el) {
         let classes = el.attr("class");
         let classList = classes ? classes.match(classRegex) : [];
 
@@ -86,7 +86,7 @@
 
             dropButton.data("dropdown-settings", settings);
             if (settings.priorElDefaults)
-                dropButton.data("dropdown-element-defaults", $.extend(settings.defaults, alignSpecDefaults(dropButton)));
+                dropButton.data("dropdown-element-defaults", $.extend(settings.defaults, applySpecDefaults(dropButton)));
             else
                 dropButton.data("dropdown-element-defaults", settings.defaults);
 
