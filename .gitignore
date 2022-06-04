@@ -1,4 +1,5 @@
 
 .idea
 venv
-/.sass-cache/
+**/.sass-cache
+**/__pycache__
