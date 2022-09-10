@@ -61,5 +61,5 @@ FrameQueue.prototype = {
 // };
 
 function BlockingFrameQueue(size) {
-    
+
 }

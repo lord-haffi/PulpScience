@@ -21,7 +21,7 @@
     border: 3px solid _palette('border-drop');
     //@include vendor('box-shadow', 'inset 0 0 10px 1px #{_palette('border-drop')}');
     border-radius: 1em;
-    
+
     &.dropdown-light {
       background-color: _palette('bg-drop-light');
       border-color: _palette('border-drop-light');
