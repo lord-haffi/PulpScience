@@ -21,6 +21,8 @@ RUN chown -R www-data:www-data /opt/app
 
 # Collect static files for production environment
 RUN (cd pulp_science/ && python manage.py collectstatic)
+# Apply migrations to database
+RUN (cd pulp_science/ && python manage.py migrate)
 
 # start server
 EXPOSE 8020
