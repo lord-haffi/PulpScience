@@ -8,7 +8,12 @@ asgiref==3.5.2
     # via django
 django==4.1.1
     # via -r requirements.in
+gunicorn==20.1.0
+    # via -r requirements.in
 sqlparse==0.4.2
     # via django
 tzdata==2022.2
     # via django
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

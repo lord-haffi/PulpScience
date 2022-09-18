@@ -13,10 +13,14 @@ RUN mkdir -p /opt/app/pulp_science
 COPY requirements.txt start-server.sh /opt/app/
 #COPY .pip_cache /opt/app/pip_cache/
 COPY pulp_science /opt/app/pulp_science/
+COPY pulp_science/pulp_science/settings_production.py /opt/app/pulp_science/pulp_science/settings.py
 WORKDIR /opt/app
 #RUN pip install -r requirements.txt --cache-dir /opt/app/pip_cache
 RUN pip install -r requirements.txt
 RUN chown -R www-data:www-data /opt/app
+
+# Collect static files for production environment
+RUN (cd pulp_science/ && python manage.py collectstatic)
 
 # start server
 EXPOSE 8020

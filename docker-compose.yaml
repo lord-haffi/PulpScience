@@ -20,11 +20,8 @@ services:
             - ${POSTGRES_PORT:-5432}:5432
     web:
         build: .
-        command: python pulp_science/manage.py runserver 0.0.0.0:8000
-        volumes:
-            - .:/opt/app
         ports:
-            - "8000:8000"
+            - "8020:8020"
         restart: always
         environment:
             POSTGRES_SERVER: db
@@ -32,6 +29,9 @@ services:
             POSTGRES_DB: ${POSTGRES_DB}
             POSTGRES_USER: ${POSTGRES_USER}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+            DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+            DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
         depends_on:
             - db
 
