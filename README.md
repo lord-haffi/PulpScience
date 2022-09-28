@@ -1,4 +1,4 @@
-# PulpScience
+# pulp_science
 A Website where people can publish and read articles (or follow projects) about scientifical topics.
 
 

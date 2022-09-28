@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pulp Science</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'homepage/images/favicon.png' %}" sizes="32x32"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'homepage/css/main_base.css' %}">
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+    <script src="{% static 'homepage/js/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'homepage/js/breakpoints.js' %}"></script>
+    <script src="{% static 'homepage/js/timedhover.js' %}"></script>
+    <script src="{% static 'homepage/js/dropdown.js' %}"></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>

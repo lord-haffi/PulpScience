@@ -1,0 +1,39 @@
+version: "3.10"
+
+services:
+    db:
+        image: postgres:12.2
+        restart: always
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_USER: ${POSTGRES_USER}
+            PGDATA: /var/lib/postgresql/data
+            # the :- tells docker-compose to use the given default value (here: 5432)
+            # if the environment variable is empty or not defined
+            # More information are listed in the docker-compose documentation:
+            # https://docs.docker.com/compose/environment-variables/#substitute-environment-variables-in-compose-files
+            PG_PORT: ${POSTGRES_PORT:-5432}
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        ports:
+            - ${POSTGRES_PORT:-5432}:5432
+    web:
+        build: .
+        ports:
+            - "8020:8020"
+        restart: always
+        environment:
+            POSTGRES_SERVER: db
+            POSTGRES_PORT: ${POSTGRES_PORT}
+            POSTGRES_DB: ${POSTGRES_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME}
+            DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+            DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
+        depends_on:
+            - db
+
+volumes:
+    db-data:
