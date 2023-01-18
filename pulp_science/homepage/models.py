@@ -31,6 +31,7 @@ class Commentable(models.Model):
     """
 
     commentable_id = models.BigAutoField(primary_key=True)
+    likes = models.PositiveIntegerField(default=0)
 
 
 class Followable(models.Model):
@@ -57,7 +58,6 @@ class Comment(Commentable):
     """
 
     content = models.TextField()
-    likes = models.PositiveIntegerField()
     commented_on = models.ForeignKey(Commentable, on_delete=models.SET_NULL, null=True, related_name="comments")
     commenter = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
