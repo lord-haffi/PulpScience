@@ -9,11 +9,13 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 # copy source and install dependencies
 RUN mkdir -p /opt/app
 RUN mkdir -p /opt/app/pip_cache
-RUN mkdir -p /opt/app/pulp_science
+RUN mkdir -p /opt/app/PulpScience
 COPY requirements.txt start-server.sh /opt/app/
 #COPY .pip_cache /opt/app/pip_cache/
-COPY pulp_science /opt/app/pulp_science/
-COPY pulp_science/pulp_science/settings_production.py /opt/app/pulp_science/pulp_science/settings.py
+COPY PulpScience /opt/app/PulpScience/
+COPY homepage /opt/app/homepage/
+COPY manage.py /opt/app/manage.py
+COPY PulpScience/settings_production.py /opt/app/PulpScience/settings.py
 WORKDIR /opt/app
 # install psycopg2 for postgresql
 RUN apt install python3-psycopg2
@@ -24,9 +26,9 @@ RUN chown -R www-data:www-data /opt/app
 RUN pip install psycopg2-binary
 
 # Collect static files for production environment
-RUN (cd pulp_science/ && python manage.py collectstatic)
+RUN python manage.py collectstatic
 # Apply migrations to database
-# RUN (cd pulp_science/ && python manage.py migrate)
+# RUN (cd PulpScience/ && python manage.py migrate)
 
 # start server
 EXPOSE 8020
