@@ -3,7 +3,7 @@ This module contains all database models for django.
 """
 from django.db import models  # type:ignore[import]
 from django.utils import timezone  # type:ignore[import]
-from django.utils.translation import gettext_lazy
+from django.utils.translation import gettext_lazy  # type:ignore[import]
 
 
 class Categories(models.TextChoices):
