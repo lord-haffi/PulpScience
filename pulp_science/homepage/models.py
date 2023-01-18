@@ -1,5 +1,8 @@
-from django.db import models
-from django.utils import timezone
+"""
+This module contains all database models for django.
+"""
+from django.db import models  # type:ignore[import]
+from django.utils import timezone  # type:ignore[import]
 
 
 class Versionable(models.Model):
@@ -19,7 +22,7 @@ class Versionable(models.Model):
         """
         Automatically set creation date
         """
-        if not self.id:
+        if not self.id:  # pylint: disable=no-member
             self.created = timezone.now()
         # self.modified = timezone.now()
         return super().save(*args, **kwargs)
