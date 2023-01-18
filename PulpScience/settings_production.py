@@ -52,7 +52,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "pulp_science.urls"
+ROOT_URLCONF = "PulpScience.urls"
 
 TEMPLATES = [
     {
