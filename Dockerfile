@@ -15,9 +15,13 @@ COPY requirements.txt start-server.sh /opt/app/
 COPY pulp_science /opt/app/pulp_science/
 COPY pulp_science/pulp_science/settings_production.py /opt/app/pulp_science/pulp_science/settings.py
 WORKDIR /opt/app
+# install psycopg2 for postgresql
+RUN apt install python3-psycopg2
 #RUN pip install -r requirements.txt --cache-dir /opt/app/pip_cache
 RUN pip install -r requirements.txt
 RUN chown -R www-data:www-data /opt/app
+# install psycopg2-binary into venv
+RUN pip install psycopg2-binary
 
 # Collect static files for production environment
 RUN (cd pulp_science/ && python manage.py collectstatic)
