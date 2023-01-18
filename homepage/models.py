@@ -3,6 +3,19 @@ This module contains all database models for django.
 """
 from django.db import models  # type:ignore[import]
 from django.utils import timezone  # type:ignore[import]
+from django.utils.translation import gettext_lazy
+
+
+class Categories(models.TextChoices):
+    """
+    This 'enum' provides values for categories.
+    """
+
+    PHYSICS = "PHY", gettext_lazy("Physics")
+    BIOLOGY = "BIO", gettext_lazy("Biology")
+    CHEMISTRY = "CHE", gettext_lazy("Chemistry")
+    INFORMATICS = "INF", gettext_lazy("Informatics")
+    MATHS = "MAT", gettext_lazy("Mathematics")
 
 
 class Versionable(models.Model):
