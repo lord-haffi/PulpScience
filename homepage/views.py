@@ -2,8 +2,8 @@
 Include the views of the homepage app.
 """
 # pylint: disable=unused-import
-from django.shortcuts import render  # type:ignore[import]
-from django.views.generic import TemplateView  # type:ignore[import]
+from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
 class IndexView(TemplateView):
