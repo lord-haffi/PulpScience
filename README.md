@@ -33,6 +33,14 @@ to restart the server.
 
 The server is addressable at `localhost:8000`.
 
+Note: If you want to use djangos admin panel you may have to create the
+superuser first:
+```bash
+python manage.py createsuperuser
+```
+But if you didn't rebuilt the sqlite database there should already be a superuser.
+(user: admin, password: sekret1)
+
 ### Docker production setup
 To use the docker setup - including backend and Postgres database server - run:
 ```bash
@@ -60,3 +68,5 @@ To stop the docker container you can use:
 docker-compose down
 ```
 The server is addressable at `localhost:8020`. Both setups can run parallel.
+
+Note: For the testing `.env` the admin account should be the same. (user: admin, password: sekret1)
