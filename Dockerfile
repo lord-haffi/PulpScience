@@ -8,8 +8,6 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 # copy source and install dependencies
 RUN mkdir -p /opt/app
-RUN mkdir -p /opt/app/pip_cache
-RUN mkdir -p /opt/app/pulp_science
 COPY requirements.txt start-server.sh /opt/app/
 #COPY .pip_cache /opt/app/pip_cache/
 COPY pulp_science /opt/app/pulp_science/
@@ -27,8 +25,6 @@ RUN pip install psycopg2-binary
 
 # Collect static files for production environment
 RUN python manage.py collectstatic
-# Apply migrations to database
-# RUN (cd pulp_science/ && python manage.py migrate)
 
 # start server
 EXPOSE 8020

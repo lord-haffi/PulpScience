@@ -33,7 +33,8 @@ services:
             DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
             DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL}
         depends_on:
-            - db
+            db:
+                condition: service_started
 
 volumes:
     db-data:
