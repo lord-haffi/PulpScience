@@ -1,7 +1,7 @@
 """
 Configuration for the homepage apps.
 """
-from django.apps import AppConfig  # type:ignore[import]
+from django.apps import AppConfig
 
 
 class HomepageConfig(AppConfig):
