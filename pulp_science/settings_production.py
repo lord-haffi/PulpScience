@@ -29,6 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS: list[str] = []
 
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8020"]
+
 
 # Application definition
 
