@@ -42,11 +42,16 @@
             <a class="expander"><i class='fas fa-bars'></i></a>
             <div class="hide">
                 <ul>
+                    {% for category in categories %}
+                        <li><a class="topic-link">{{ category.1 }}</a></li>
+                    {% endfor %}
+                <!--
                     <li><a class="topic-link active">Informatics</a></li>
                     <li><a class="topic-link">Biology</a></li>
                     <li><a class="topic-link">Chemistry</a></li>
                     <li><a class="topic-link">Mathematics</a></li>
                     <li><a class="topic-link">Physics</a></li>
+                -->
                 </ul>
             </div>
         </div>
