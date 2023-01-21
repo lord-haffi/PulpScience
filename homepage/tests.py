@@ -8,6 +8,10 @@ from django.urls import reverse
 
 # Create your tests here.
 class TestIndexPage(TestCase):
+    def test_template_used(self):
+        response = self.client.get(reverse("homepage:index"))
+        self.assertTemplateUsed(response, "homepage/index.html")
+
     def test_categories(self):
         response = self.client.get(reverse("homepage:index"))
         self.assertEqual(response.status_code, 200)
