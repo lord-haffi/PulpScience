@@ -1,8 +1,6 @@
 """
 Includes all unit and integration tests for the homepage app.
 """
-import re
-
 # pylint: disable=unused-import
 from django.test import TestCase, tag
 from django.urls import reverse
@@ -39,7 +37,7 @@ class TestIndexPage(TestCase):
             if category["label"] == gettext_lazy("Physics"):
                 has_physics = True
                 break
-        self.assert_(has_physics)
+        self.assertTrue(has_physics)
 
     @tag("routing")
     def test_category_subrouting(self) -> None:
@@ -50,7 +48,7 @@ class TestIndexPage(TestCase):
         self.assertEqual(response.status_code, 200)
 
     @tag("html")
-    def test_category_subrouting_HTML(self) -> None:
+    def test_category_subrouting_html(self) -> None:
         """
         Test if the category subrouting works properly aka returns proper HTML.
         """
