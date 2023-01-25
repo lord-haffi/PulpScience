@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy
 
 
-class Categories(models.TextChoices):
+class Category(models.TextChoices):
     """
     This 'enum' provides values for categories.
     """
