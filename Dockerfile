@@ -9,12 +9,12 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 # copy source and install dependencies
 RUN mkdir -p /opt/app
 WORKDIR /opt/app
-COPY requirements.txt start-server.sh /opt/app/
+RUN chown -R www-data:www-data /opt/app
 # install psycopg2 for postgresql
 RUN apt install python3-psycopg2
 #RUN pip install -r requirements.txt --cache-dir /opt/app/pip_cache
+COPY requirements.txt start-server.sh /opt/app/
 RUN pip install -r requirements.txt
-RUN chown -R www-data:www-data /opt/app
 # install psycopg2-binary into venv
 RUN pip install psycopg2-binary
 #COPY .pip_cache /opt/app/pip_cache/
