@@ -70,3 +70,5 @@ docker-compose down
 The server is addressable at `localhost:8020`. Both setups can run parallel.
 
 Note: For the testing `.env` the admin account should be the same. (user: admin, password: sekret1)
+
+Hallo das ist ein Test.
