@@ -2,7 +2,7 @@
 @keyframes minimize-nav-top {
   0% {
     width: calc(100% - 2 * #{_size('menu-m')});
-    top: _size('menu') * 2;
+    top: calc(_size('menu') * 2);
     left: _size('menu-m');
     padding: _size('menu-m') _size('menu');
   }
@@ -66,7 +66,7 @@
       //border: 1px solid;
       border-radius: 0.5em 0.5em 0 0;
       background-color: rgba(127, 127, 127, 0.5);
-      padding: _size('padding')/2 _size('padding');
+      padding: calc(_size('padding')/2) _size('padding');
       font-size: 1.3em;
       width: 3em;
       text-align: center;
@@ -148,7 +148,7 @@
             @include vendor('align-items', 'flex-end');
           }
           & > li > a {
-            margin: _size('padding')/2 0;
+            margin: calc(_size('padding')/2) 0;
           }
         }
       }
