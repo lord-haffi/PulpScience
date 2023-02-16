@@ -10,6 +10,7 @@ a {
   text-decoration: underline;
   cursor: pointer;
   border-radius: 0.3em;
+  color: _palette('link');
 
   @include vendor('transition', (
       //'background-color 0.3s ease-in-out',
