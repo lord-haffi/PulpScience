@@ -3,3 +3,4 @@
 venv
 **/.sass-cache
 **/__pycache__
+**/*.css.map
