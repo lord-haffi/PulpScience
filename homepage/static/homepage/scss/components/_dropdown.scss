@@ -16,7 +16,7 @@
 
   & > .dropdown-menu {
     position: relative;
-    padding: _size('menu-m')/2 _size('menu-m');
+    padding: calc(_size('menu-m')/2) _size('menu-m');
     background-color: _palette('bg-drop');
     border: 3px solid _palette('border-drop');
     //@include vendor('box-shadow', 'inset 0 0 10px 1px #{_palette('border-drop')}');
@@ -37,7 +37,7 @@
       display: block;
     }
     & > ul > li {
-      padding: _size('menu-sm')/2 0;
+      padding: calc(_size('menu-sm')/2) 0;
 
       & a {
         text-decoration: none;
