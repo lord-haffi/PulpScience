@@ -792,8 +792,12 @@
   }
   #sidebar > .nav-menu-collapsible > div > ul > li > a {
     display: block;
+    border: 1px solid #2a2a2a;
     padding: 0.35em 0.9em;
     text-decoration: none;
+  }
+  #sidebar > .nav-menu-collapsible > div > ul > li > a.active {
+    border: 1px solid #e77681;
   }
   #sidebar > .nav-menu-collapsible > div > ul > li > a * {
     display: inline;
