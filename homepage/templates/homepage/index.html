@@ -43,7 +43,9 @@
             <div class="hide">
                 <ul>
                     {% for category in categories %}
-                        <li><a class="topic-link{{ category.add_class }}" href="{{ category.link }}">{{ category.label }}</a></li>
+                        <li><a class="topic-link{{ category.add_class }}" data-url="{{ category.link }}">
+                            {{ category.label }}
+                        </a></li>
                     {% endfor %}
                 <!--
                     <li><a class="topic-link active">Informatics</a></li>

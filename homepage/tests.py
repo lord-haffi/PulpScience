@@ -55,7 +55,7 @@ class TestIndexPage(TestCase):
         response = self.client.get(reverse("homepage:index", kwargs={"active_category": "physics"}))
         self.assertEqual(response.status_code, 200)
         find_physics = (
-            f'<a class="topic-link active" href="'
+            f'<a class="topic-link active" data-url="'
             f'{reverse("homepage:index", kwargs={"active_category": "physics"})}">Physics</a>'
         )
         self.assertContains(response, find_physics, html=True)

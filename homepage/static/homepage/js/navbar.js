@@ -74,4 +74,40 @@ $(function () {
     //         ];
     // })();
     // $(".logo svg path").hover(svgHoverFuncs[0], svgHoverFuncs[1]);
+    function setActiveCategory(newActiveDOM) {
+        $("#sidebar .nav-menu-collapsible a.topic-link.active").removeClass("active");
+        if (newActiveDOM) {
+            newActiveDOM.addClass("active");
+        }
+    }
+    let currentActiveDOM = $("#sidebar .nav-menu-collapsible a.topic-link.active");
+    if (currentActiveDOM) {
+        window.history.replaceState({category: currentActiveDOM.text()}, "");
+    } else {
+        window.history.replaceState({category: undefined}, "");
+    }
+    window.onpopstate = function (event) {
+        let serialized_data = event.state;
+        if (serialized_data.category) {
+            document.title = "Pulp Science - " + serialized_data.category;
+        } else {
+            document.title = "Pulp Science";
+        }
+        setActiveCategory(
+            $("#sidebar .nav-menu-collapsible a.topic-link:contains('" + serialized_data.category + "')")
+        );
+    };
+    $("#sidebar .nav-menu-collapsible a.topic-link").each(function () {
+        $(this).click(function () {
+            let newActive = $(this);
+            let newActiveCategory = newActive.text();
+            setActiveCategory(newActive);
+            window.history.pushState(
+                {category: newActiveCategory},
+                " - " + newActiveCategory,
+                newActive.attr("data-url")
+            );
+            document.title = "Pulp Science - " + newActiveCategory;
+        });
+    });
 });
