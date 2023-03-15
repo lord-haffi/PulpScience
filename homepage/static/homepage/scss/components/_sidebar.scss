@@ -42,7 +42,7 @@
       & > ul {
         display: block;
         & > li {
-          & > a{
+          & > a.topic-link {
             display: block;
             border: 1px solid _palette('bg-alt');
             padding: _size('padding-btn');

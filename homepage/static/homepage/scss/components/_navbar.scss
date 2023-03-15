@@ -184,6 +184,14 @@
       //'font-size 0.4s ease-in-out'
     ));
 
+    & > .nav-menu-collapsible > div > ul > li > a.topic-link {
+      border: 1px solid _palette('bg-alt');
+
+      &.active {
+        border: 1px solid darken(_palette('link-hover'), 10%);
+      }
+    }
+
   &.minimized {
     top: 0;
     left: 0;

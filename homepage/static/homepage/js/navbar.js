@@ -74,4 +74,13 @@ $(function () {
     //         ];
     // })();
     // $(".logo svg path").hover(svgHoverFuncs[0], svgHoverFuncs[1]);
+    $("#sidebar .nav-menu-collapsible a.topic-link").each(function () {
+        $(this).click(function () {
+            $("#sidebar .nav-menu-collapsible a.topic-link.active").removeClass("active");
+            let newActive = $(this)
+            let newActiveCategory = newActive.text()
+            $(this).addClass("active");
+            window.history.pushState({category: newActiveCategory}, " - " + newActiveCategory, newActive.attr("data-url"));
+        });
+    });
 });
