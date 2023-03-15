@@ -25,7 +25,10 @@ def index(request, active_category: Optional[Category] = None):
                 "link": reverse("homepage:index", kwargs={"active_category": member.label.lower()}),
             }
         )
+    page_title = "Pulp Science"
+    if active_category is not None:
+        page_title += f" - {active_category.label}"
 
     template_name = "homepage/index.html"
-    context = {"categories": categories}
+    context = {"categories": categories, "page_title": page_title}
     return render(request, template_name, context)
