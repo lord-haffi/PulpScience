@@ -134,3 +134,6 @@ STATIC_ROOT = "/opt/app/assets/"
 STATICFILES_DIRS = [
     "homepage/static",
 ]
+
+LOGIN_URL = "login"
+LOGOUT_URL = "logout"
