@@ -10,7 +10,7 @@ django==4.2
     # via -r requirements.in
 gunicorn==20.1.0
     # via -r requirements.in
-sqlparse==0.4.3
+sqlparse==0.4.4
     # via django
 
 # The following packages are considered to be unsafe in a requirements file:
