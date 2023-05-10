@@ -81,10 +81,31 @@ class TestIndexPage(TestCase):
         response = self.client.get(reverse("auth:login"))
         self.assertEqual(response.status_code, 200)
 
-    @tag("logout", "routing")
-    def test_logout_page_200(self) -> None:
+    @tag("login", "routing")
+    def test_login_page_redirect(self) -> None:
         """
-        Test if the logout page is available
+        Test if the login page is available and redirects successfully
         """
-        response = self.client.get(reverse("auth:logout"))
+        user = User.objects.create(username="testuser")
+        user.set_password("12345")
+        user.save()
+
+        response = self.client.post(
+            reverse("auth:login") + "?next=/", {"username": "testuser", "password": "12345"}, follow=True
+        )
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "homepage/index.html")
+
+    @tag("logout", "routing")
+    def test_logout_page_redirect(self) -> None:
+        """
+        Test if the logout page is available and redirects successfully
+        """
+        user = User.objects.create(username="testuser")
+        user.set_password("12345")
+        user.save()
+
+        self.assertTrue(self.client.login(username="testuser", password="12345"))
+        response = self.client.get(reverse("auth:logout") + f"?next=/", follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "homepage/index.html")
