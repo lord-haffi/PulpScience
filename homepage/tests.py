@@ -106,6 +106,6 @@ class TestIndexPage(TestCase):
         user.save()
 
         self.assertTrue(self.client.login(username="testuser", password="12345"))
-        response = self.client.get(reverse("auth:logout") + f"?next=/", follow=True)
+        response = self.client.get(reverse("auth:logout") + "?next=/", follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "homepage/index.html")
