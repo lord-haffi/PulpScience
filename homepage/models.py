@@ -70,19 +70,24 @@ class Followable(models.Model):
     followable_id = models.BigAutoField(primary_key=True)
 
 
-class User(Followable):
+class Tag(models.Model):
+    """
+    This entity models a single tag. These tags can be used to categorize articles and projects.
+    """
+
+    text = models.CharField(max_length=32)
+
+
+class User(Followable, Commentable):
     """
     This class is only a dummy class yet. Instead, we should use or extend the user model of django's user management
-    systen if possible.
+    system if possible.
     """
 
     alias = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
     follows = models.ManyToManyField(Followable, related_name="followed_by")  # follows?
-    liked = models.ManyToManyField(Commentable, related_name="likes")
-    comment = models.OneTo(Comment, related_name="comment_written_by")
-    article = models.ManyToManyField(Article, related_name="article_written_by")
-    project = models.ManyToManyField(Project, related_name="project_written_by")
+    likes = models.ManyToManyField(Commentable, related_name="likes")
 
 
 class Comment(Commentable, Versionable):
@@ -92,7 +97,7 @@ class Comment(Commentable, Versionable):
 
     content = models.TextField()
     commented_on = models.ForeignKey(Commentable, on_delete=models.SET_NULL, null=True, related_name="comments")
-    commenter = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    written_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
 
 class Project(Commentable, Followable):
@@ -104,14 +109,23 @@ class Project(Commentable, Followable):
     subtitle = models.CharField(max_length=128, null=True)
     description = models.TextField()
     thumbnail = models.ImageField()
-    authors = models.ManyToManyField(User, related_name="authored_projects")  # related name?
+    authors = models.ManyToManyField(User, related_name="authored_projects")
+    tags = models.ManyToManyField(Tag)
+    categories = models.ManyToManyField(Category)
+    visibility = models.CharField(max_length=16, choices=Visibility.choices, default=Visibility.private)
 
 
 class Article(Commentable, Versionable):
+    """
+    This entity models an article. An article relates to a project and one or more users.
+    """
 
     title = models.CharField(max_length=64)
     subtitle = models.CharField(max_length=128, null=True)
     content = models.TextField()
     thumbnail = models.ImageField()
     project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
-    authors = models.ManyToManyField(User)
+    authors = models.ManyToManyField(User, related_name="authored_articles")
+    tags = models.ManyToManyField(Tag)
+    categories = models.ManyToManyField(Category)
+    visibility = models.CharField(max_length=16, choices=Visibility.choices, default=Visibility.private)
