@@ -18,6 +18,18 @@ class Category(models.TextChoices):
     MATHS = "MAT", gettext_lazy("Mathematics")
 
 
+class Visibility(models.TextChoices):
+    """
+    This 'enum' provides values for visibility settings.
+    """
+
+    private = "private", gettext_lazy("private")
+    review = "review", gettext_lazy("review")
+    follower = "follower", gettext_lazy("follower")
+    user = "user", gettext_lazy("user")
+    public = "public", gettext_lazy("public")
+
+
 class Versionable(models.Model):
     """
     This serves as super class to all entities being considered as 'versionable'.
@@ -64,11 +76,16 @@ class User(Followable):
     systen if possible.
     """
 
+    alias = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
-    following = models.ManyToManyField(Followable, related_name="followed_by")
+    follows = models.ManyToManyField(Followable, related_name="followed_by")  # follows?
+    liked = models.ManyToManyField(Commentable, related_name="likes")
+    comment = models.OneTo(Comment, related_name="comment_written_by")
+    article = models.ManyToManyField(Article, related_name="article_written_by")
+    project = models.ManyToManyField(Project, related_name="project_written_by")
 
 
-class Comment(Commentable):
+class Comment(Commentable, Versionable):
     """
     This entity models a single comment. A comment relates to a commentable entity and a user.
     """
@@ -86,4 +103,15 @@ class Project(Commentable, Followable):
     title = models.CharField(max_length=64)
     subtitle = models.CharField(max_length=128, null=True)
     description = models.TextField()
-    authors = models.ManyToManyField(User, related_name="authored_projects")
+    thumbnail = models.ImageField()
+    authors = models.ManyToManyField(User, related_name="authored_projects")  # related name?
+
+
+class Article(Commentable, Versionable):
+
+    title = models.CharField(max_length=64)
+    subtitle = models.CharField(max_length=128, null=True)
+    content = models.TextField()
+    thumbnail = models.ImageField()
+    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True)
+    authors = models.ManyToManyField(User)
