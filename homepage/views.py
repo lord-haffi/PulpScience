@@ -25,7 +25,27 @@ def index(request, active_category: Optional[Category] = None):
                 "link": reverse("homepage:index", kwargs={"active_category": member.label.lower()}),
             }
         )
+    page_title = "Pulp Science"
+    if active_category is not None:
+        page_title += f" - {active_category.label}"
 
     template_name = "homepage/index.html"
-    context = {"categories": categories}
+    current_url = (
+        reverse("homepage:index")
+        if active_category is None
+        else reverse("homepage:index", kwargs={"active_category": active_category.label.lower()})
+    )
+    if request.user.is_authenticated:
+        loginout = "Logout"
+        loginout_url = reverse("auth:logout") + f"?next={current_url}"
+    else:
+        loginout = "Login"
+        loginout_url = reverse("auth:login") + f"?next={current_url}"
+    context = {
+        "categories": categories,
+        "page_title": page_title,
+        "loginout": loginout,
+        "loginout_url": loginout_url,
+        "current_url": current_url,
+    }
     return render(request, template_name, context)

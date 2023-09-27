@@ -52,6 +52,7 @@ $basePalette: (
 	news-announcement: #694eae,
 );
 $nestedPalette: (
+	link: white,
 	link-hover: lighten(map-get($basePalette, 'btn-danger'), 25%),
 	border-drop: darken(map-get($basePalette, 'bg-drop'), 5%),
 	border-drop-light: darken(map-get($basePalette, 'bg-drop-light'), 20%),

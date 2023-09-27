@@ -19,4 +19,5 @@ from django.urls import include, path
 urlpatterns = [
     path("", include(("homepage.urls", "homepage"), namespace="homepage")),
     path("admin/", admin.site.urls),
+    path("registration/", include(("django.contrib.auth.urls", "auth"))),
 ]
