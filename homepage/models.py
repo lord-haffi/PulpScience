@@ -1,6 +1,8 @@
 """
 This module contains all database models for django.
 """
+from typing import TypeVar
+
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy
@@ -25,6 +27,9 @@ class Visibility(models.TextChoices):
     "Visible to everyone"
 
 
+T = TypeVar("T", bound="Versionable")
+
+
 class Versionable(models.Model):
     """
     This serves as super class to all entities being considered as 'versionable'.
@@ -42,10 +47,36 @@ class Versionable(models.Model):
         """
         Automatically set creation date
         """
-        if not self.id:  # pylint: disable=no-member
+        if not self.versionable_id:  # pylint: disable=no-member
             self.created = timezone.now()
+        if not self.version_group:
+            max_version_group = Versionable.objects.aggregate(models.Max("version_group"))["version_group__max"]
+            self.version_group = max_version_group + 1 if max_version_group is not None else 1
+        if not self.version_number:
+            self.version_number = 1
         # self.modified = timezone.now()
         return super().save(*args, **kwargs)
+
+    def new_version(self: T) -> T:
+        """
+        Creates a new version of this entity. Copies all fields except the IDs and increments the
+        'version_number'.
+        """
+        fields = {
+            field.name: getattr(self, field.name)
+            for field in self._meta.fields
+            if field.name
+            not in (
+                "versionable_id",
+                "versionable_ptr",
+                "commentable_id",
+                "commentable_ptr",
+                "followable_id",
+                "followable_ptr",
+            )
+        }
+        fields["version_number"] += 1
+        return self.__class__(**fields)
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=["version_group", "version_number"], name="unique_version")]
@@ -119,7 +150,7 @@ class Project(Commentable, Followable):
     title = models.CharField(max_length=64)
     subtitle = models.CharField(max_length=128, null=True)
     description = models.TextField()
-    thumbnail = models.ImageField()
+    thumbnail = models.ImageField(null=True)
     related_authors = models.ManyToManyField(User, related_name="related_projects")
     related_tags = models.ManyToManyField(Tag, related_name="related_projects")
     related_categories = models.ManyToManyField(Category, related_name="related_projects")
@@ -134,7 +165,7 @@ class Article(Commentable, Versionable):
     title = models.CharField(max_length=64)
     subtitle = models.CharField(max_length=128, null=True)
     content = models.TextField()
-    thumbnail = models.ImageField()
+    thumbnail = models.ImageField(null=True)
     related_project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, related_name="related_articles")
     related_authors = models.ManyToManyField(User, related_name="related_articles")
     related_tags = models.ManyToManyField(Tag, related_name="related_articles")

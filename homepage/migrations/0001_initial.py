@@ -93,7 +93,7 @@ class Migration(migrations.Migration):
                 ("title", models.CharField(max_length=64)),
                 ("subtitle", models.CharField(max_length=128, null=True)),
                 ("content", models.TextField()),
-                ("thumbnail", models.ImageField(upload_to="")),
+                ("thumbnail", models.ImageField(upload_to="", null=True)),
                 (
                     "visibility",
                     models.CharField(
@@ -165,7 +165,7 @@ class Migration(migrations.Migration):
                 ("title", models.CharField(max_length=64)),
                 ("subtitle", models.CharField(max_length=128, null=True)),
                 ("description", models.TextField()),
-                ("thumbnail", models.ImageField(upload_to="")),
+                ("thumbnail", models.ImageField(upload_to="", null=True)),
                 (
                     "visibility",
                     models.CharField(
