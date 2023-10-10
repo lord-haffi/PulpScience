@@ -5,6 +5,10 @@ line-length = 120
 profile = "black"
 line_length = 120
 
+[tool.pylint]
+load-plugins = ["pylint_django","pylint_pytest"]
+django-settings-module = "pulp_science.settings"
+
 [tool.pylint.format]
 max-line-length = 120
 

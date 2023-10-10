@@ -1,15 +1,30 @@
 """
 Contains custom converters to convert custom types in URL parameters.
 """
+from django.db.utils import OperationalError
+
 from homepage.models import Category
 
 
 class CategoryConverter:
     """
-    Converter for Enum `Category`.
+    Converter for Model `Category`.
     """
 
-    regex = "|".join([str(label).lower() for label in Category.labels])
+    @property
+    def regex(self) -> str:
+        """
+        Returns a regex string to match all categories.
+        It is implemented as property because Django calls like `python manage.py migrate` will fail if the database
+        has no table `homepage_category` yet. This is because this property is called during the migration process
+        (idk why, some initialization process of Django I guess).
+        """
+        try:
+            return "|".join([category.name for category in Category.objects.all()])
+        except OperationalError as error:
+            if "no such table" not in str(error):
+                raise
+            return ""
 
     def to_python(self, value: str) -> Category:
         """
@@ -17,10 +32,10 @@ class CategoryConverter:
         :param value: Provided URL parameter as string
         :return: The corresponding `Category` enum object
         """
-        for member in Category:
-            if member.label.lower() == value:
-                return member
-        raise ValueError(f"Unknown category {value}")
+        try:
+            return Category.objects.get(name=value.lower())
+        except Category.DoesNotExist as error:
+            raise ValueError(f"Unknown category {value.lower()}") from error
 
     def to_url(self, value: str) -> str:
         """
