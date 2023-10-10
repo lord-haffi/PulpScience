@@ -16,24 +16,24 @@ def index(request, active_category: Optional[Category] = None):
     The index page of the homepage. It uses the `index.html` in the template folder.
     """
     categories = []
-    for member in Category:
-        add_class = "" if active_category is None or active_category != member else " active"
+    for category in Category.objects.all():
+        add_class = "" if active_category is None or active_category != category else " active"
         categories.append(
             {
-                "label": member.label,
+                "label": category.name.capitalize(),
                 "add_class": add_class,
-                "link": reverse("homepage:index", kwargs={"active_category": member.label.lower()}),
+                "link": reverse("homepage:index", kwargs={"active_category": category.name}),
             }
         )
     page_title = "Pulp Science"
     if active_category is not None:
-        page_title += f" - {active_category.label}"
+        page_title += f" - {active_category.name.capitalize()}"
 
     template_name = "homepage/index.html"
     current_url = (
         reverse("homepage:index")
         if active_category is None
-        else reverse("homepage:index", kwargs={"active_category": active_category.label.lower()})
+        else reverse("homepage:index", kwargs={"active_category": active_category.name})
     )
     if request.user.is_authenticated:
         loginout = "Logout"
