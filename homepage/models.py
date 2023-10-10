@@ -72,7 +72,7 @@ class Tag(models.Model):
     This entity models a single tag. These tags can be used to categorize articles and projects.
     """
 
-    text = models.CharField(max_length=32, unique=True)
+    name = models.CharField(max_length=32, unique=True)
 
 
 class Category(models.Model):
@@ -80,7 +80,7 @@ class Category(models.Model):
     This model provides values for categories.
     """
 
-    text = models.CharField(max_length=16, unique=True)
+    name = models.CharField(max_length=16, unique=True)
 
     # PHYSICS = "PHY", gettext_lazy("Physics")
     # BIOLOGY = "BIO", gettext_lazy("Biology")
@@ -120,9 +120,9 @@ class Project(Commentable, Followable):
     subtitle = models.CharField(max_length=128, null=True)
     description = models.TextField()
     thumbnail = models.ImageField()
-    authors = models.ManyToManyField(User, related_name="projects")
-    tags = models.ManyToManyField(Tag, related_name="projects")
-    categories = models.ManyToManyField(Category, related_name="projects")
+    related_authors = models.ManyToManyField(User, related_name="related_projects")
+    related_tags = models.ManyToManyField(Tag, related_name="related_projects")
+    related_categories = models.ManyToManyField(Category, related_name="related_projects")
     visibility = models.CharField(max_length=16, choices=Visibility.choices, default=Visibility.private)
 
 
@@ -135,8 +135,8 @@ class Article(Commentable, Versionable):
     subtitle = models.CharField(max_length=128, null=True)
     content = models.TextField()
     thumbnail = models.ImageField()
-    project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, related_name="articles")
-    authors = models.ManyToManyField(User, related_name="articles")
-    tags = models.ManyToManyField(Tag, related_name="articles")
-    categories = models.ManyToManyField(Category, related_name="articles")
+    related_project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, related_name="related_articles")
+    related_authors = models.ManyToManyField(User, related_name="related_articles")
+    related_tags = models.ManyToManyField(Tag, related_name="related_articles")
+    related_categories = models.ManyToManyField(Category, related_name="related_articles")
     visibility = models.CharField(max_length=16, choices=Visibility.choices, default=Visibility.private)
