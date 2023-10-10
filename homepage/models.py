@@ -13,17 +13,17 @@ class Visibility(models.TextChoices):
     This 'enum' provides values for visibility settings.
     """
 
-    moderator = "moderator", gettext_lazy("moderator")
+    MODERATOR = "moderator", gettext_lazy("moderator")
     "Visible only to moderators"
-    private = "private", gettext_lazy("private")
+    PRIVATE = "private", gettext_lazy("private")
     "Visible only to author(s) and above"
-    review = "review", gettext_lazy("review")
+    REVIEW = "review", gettext_lazy("review")
     "Visible only to reviewers and above"
-    follower = "follower", gettext_lazy("follower")
+    FOLLOWER = "follower", gettext_lazy("follower")
     "Visible only to followers and above"
-    user = "user", gettext_lazy("user")
+    USER = "user", gettext_lazy("user")
     "Visible only to registered users"
-    public = "public", gettext_lazy("public")
+    PUBLIC = "public", gettext_lazy("public")
     "Visible to everyone"
 
 
@@ -113,12 +113,6 @@ class Category(models.Model):
 
     name = models.CharField(max_length=16, unique=True)
 
-    # PHYSICS = "PHY", gettext_lazy("Physics")
-    # BIOLOGY = "BIO", gettext_lazy("Biology")
-    # CHEMISTRY = "CHE", gettext_lazy("Chemistry")
-    # INFORMATICS = "INF", gettext_lazy("Informatics")
-    # MATHS = "MAT", gettext_lazy("Mathematics")
-
 
 class User(Followable, Commentable):
     """
@@ -154,7 +148,7 @@ class Project(Commentable, Followable):
     related_authors = models.ManyToManyField(User, related_name="related_projects")
     related_tags = models.ManyToManyField(Tag, related_name="related_projects")
     related_categories = models.ManyToManyField(Category, related_name="related_projects")
-    visibility = models.CharField(max_length=16, choices=Visibility.choices, default=Visibility.private)
+    visibility = models.CharField(max_length=16, choices=Visibility.choices, default=Visibility.PRIVATE)
 
 
 class Article(Commentable, Versionable):
@@ -170,4 +164,4 @@ class Article(Commentable, Versionable):
     related_authors = models.ManyToManyField(User, related_name="related_articles")
     related_tags = models.ManyToManyField(Tag, related_name="related_articles")
     related_categories = models.ManyToManyField(Category, related_name="related_articles")
-    visibility = models.CharField(max_length=16, choices=Visibility.choices, default=Visibility.private)
+    visibility = models.CharField(max_length=16, choices=Visibility.choices, default=Visibility.PRIVATE)

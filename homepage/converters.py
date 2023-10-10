@@ -34,8 +34,8 @@ class CategoryConverter:
         """
         try:
             return Category.objects.get(name=value.lower())
-        except Category.DoesNotExist:
-            raise ValueError(f"Unknown category {value.lower()}")
+        except Category.DoesNotExist as error:
+            raise ValueError(f"Unknown category {value.lower()}") from error
 
     def to_url(self, value: str) -> str:
         """

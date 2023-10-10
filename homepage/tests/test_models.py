@@ -8,6 +8,7 @@ from django.test import TestCase, tag
 from homepage import models
 
 
+@tag("models")
 class TestModels(TestCase):
     """
     Test basic functionality of the models of the homepage app.
