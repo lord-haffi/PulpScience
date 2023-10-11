@@ -28,6 +28,7 @@ class Command(BaseCommand):
         """
         Handle the command
         """
+        # pylint: disable=invalid-name
         User = get_user_model()
 
         if options["no_input"]:
