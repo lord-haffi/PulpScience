@@ -73,6 +73,7 @@ class Versionable(models.Model):
                 "commentable_ptr",
                 "followable_id",
                 "followable_ptr",
+                "id",
             )
         }
         fields["version_number"] += 1
@@ -120,6 +121,7 @@ class User(Followable, Commentable):
     system if possible.
     """
 
+    id = models.BigAutoField(primary_key=True)
     alias = models.CharField(max_length=32)
     name = models.CharField(max_length=32)
     follows = models.ManyToManyField(Followable, blank=True, related_name="followed_by")
@@ -131,6 +133,7 @@ class Comment(Commentable, Versionable):
     This entity models a single comment. A comment relates to a commentable entity and a user.
     """
 
+    id = models.BigAutoField(primary_key=True)
     content = models.TextField()
     commented_on = models.ForeignKey(Commentable, on_delete=models.RESTRICT, related_name="comments")
     written_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="written_comments")
@@ -141,10 +144,11 @@ class Project(Commentable, Followable):
     This entity models a project. A project consists of one or more articles.
     """
 
+    id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=64)
     subtitle = models.CharField(max_length=128, null=True)
     description = models.TextField()
-    thumbnail = models.ImageField(null=True)
+    thumbnail = models.ImageField(null=True, blank=True)
     related_authors = models.ManyToManyField(User, blank=True, related_name="related_projects")
     related_tags = models.ManyToManyField(Tag, blank=True, related_name="related_projects")
     related_categories = models.ManyToManyField(Category, blank=True, related_name="related_projects")
@@ -156,10 +160,11 @@ class Article(Commentable, Versionable):
     This entity models an article. An article relates to a project and one or more users.
     """
 
+    id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=64)
     subtitle = models.CharField(max_length=128, null=True)
     content = models.TextField()
-    thumbnail = models.ImageField(null=True)
+    thumbnail = models.ImageField(null=True, blank=True)
     related_project = models.ForeignKey(Project, on_delete=models.SET_NULL, null=True, related_name="related_articles")
     related_authors = models.ManyToManyField(User, blank=True, related_name="related_articles")
     related_tags = models.ManyToManyField(Tag, blank=True, related_name="related_articles")
