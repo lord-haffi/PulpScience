@@ -3,6 +3,7 @@ This module contains all database models for django.
 """
 from typing import TypeVar
 
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy
@@ -27,10 +28,36 @@ class Visibility(models.TextChoices):
     "Visible to everyone"
 
 
-T = TypeVar("T", bound="Versionable")
+ModelT = TypeVar("ModelT", bound=models.Model)
 
 
-class Versionable(models.Model):
+# pylint: disable=too-few-public-methods
+class GetSubclassesMixin:
+    """
+    This mixin provides a method to get all subclasses of the calling class.
+    """
+
+    # mypy error:
+    # The erased type of self "Type[django.db.models.base.Model]" is not a supertype of its class
+    # "Type[homepage.models.GetSubclassesMixin]"
+    # Obviously mypy complains about the fact that this mixin is not inheriting from models.Model.
+    # However, this is intended as this mixin is only used by models.Model subclasses.
+    @classmethod
+    def get_subclasses(cls: type[ModelT]) -> list[type[ModelT]]:  # type: ignore[misc]
+        """
+        Returns all subclasses of the calling class.
+        """
+        if not hasattr(cls, "_meta"):
+            raise TypeError("This mixin can only be used with classes that derive from Model.")
+        content_types = ContentType.objects.filter(app_label=cls._meta.app_label)
+        model_classes = [ct.model_class() for ct in content_types]
+        return [model for model in model_classes if (model is not None and issubclass(model, cls) and model is not cls)]
+
+
+VersionableT = TypeVar("VersionableT", bound="Versionable")
+
+
+class Versionable(models.Model, GetSubclassesMixin):
     """
     This serves as super class to all entities being considered as 'versionable'.
     An entity relate to a 'version_group' as its ID and the 'version_number' as its version.
@@ -57,7 +84,7 @@ class Versionable(models.Model):
         # self.modified = timezone.now()
         return super().save(*args, **kwargs)
 
-    def new_version(self: T) -> T:
+    def new_version(self: VersionableT) -> VersionableT:
         """
         Creates a new version of this entity. Copies all fields except the IDs and increments the
         'version_number'.
@@ -79,24 +106,78 @@ class Versionable(models.Model):
         fields["version_number"] += 1
         return self.__class__(**fields)
 
+    def __str__(self) -> str:
+        """
+        Determine which type created this object and return its name + its __str__ value.
+        """
+        subclasses = self.get_subclasses()
+        for subclass in subclasses:
+            try:
+                matches = subclass.objects.filter(versionable_ptr_id=self.versionable_id)  # type: ignore[misc]
+                # mypy error:
+                # Cannot resolve keyword 'versionable_ptr_id' into field.
+                # Choices are: article, comment, created, version_group, version_number, versionable_id
+                # With the try-except block we make sure that the error is ignored.
+                if matches.count() == 1:
+                    return f"{subclass.__name__}: {str(matches.first())}"
+            except AttributeError:
+                pass
+        return f"Versionable: {self.versionable_id}"
+
     class Meta:
         constraints = [models.UniqueConstraint(fields=["version_group", "version_number"], name="unique_version")]
 
 
-class Commentable(models.Model):
+class Commentable(models.Model, GetSubclassesMixin):
     """
     This serves as super class to all entities being considered as 'commentable'.
     """
 
     commentable_id = models.BigAutoField(primary_key=True)
 
+    def __str__(self) -> str:
+        """
+        Determine which type created this object and return its name + its __str__ value.
+        """
+        subclasses = self.get_subclasses()
+        for subclass in subclasses:
+            try:
+                matches = subclass.objects.filter(commentable_ptr_id=self.commentable_id)  # type: ignore[misc]
+                # mypy error:
+                # Cannot resolve keyword 'commentable_ptr_id' into field.
+                # Choices are: article, comment, commentable_id, comments, liked_by, project, user
+                # With the try-except block we make sure that the error is ignored.
+                if matches.count() == 1:
+                    return f"{subclass.__name__}: {str(matches.first())}"
+            except AttributeError:
+                pass
+        return f"Commentable: {self.commentable_id}"
 
-class Followable(models.Model):
+
+class Followable(models.Model, GetSubclassesMixin):
     """
     This serves as super class to all entities being considered as 'followable'.
     """
 
     followable_id = models.BigAutoField(primary_key=True)
+
+    def __str__(self) -> str:
+        """
+        Determine which type created this object and return its name + its __str__ value.
+        """
+        subclasses = self.get_subclasses()
+        for subclass in subclasses:
+            try:
+                matches = subclass.objects.filter(followable_ptr_id=self.followable_id)  # type: ignore[misc]
+                # mypy error:
+                # Cannot resolve keyword 'followable_ptr_id' into field.
+                # Choices are: followable_id, followed_by, project, user
+                # With the try-except block we make sure that the error is ignored.
+                if matches.count() == 1:
+                    return f"{subclass.__name__}: {str(matches.first())}"
+            except AttributeError:
+                pass
+        return f"Followable: {self.followable_id}"
 
 
 class Tag(models.Model):
@@ -106,6 +187,9 @@ class Tag(models.Model):
 
     name = models.CharField(max_length=32, unique=True)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Category(models.Model):
     """
@@ -113,6 +197,9 @@ class Category(models.Model):
     """
 
     name = models.CharField(max_length=16, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class User(Followable, Commentable):
@@ -127,6 +214,9 @@ class User(Followable, Commentable):
     follows = models.ManyToManyField(Followable, blank=True, related_name="followed_by")
     likes = models.ManyToManyField(Commentable, blank=True, related_name="liked_by")
 
+    def __str__(self) -> str:
+        return self.alias
+
 
 class Comment(Commentable, Versionable):
     """
@@ -137,6 +227,9 @@ class Comment(Commentable, Versionable):
     content = models.TextField()
     commented_on = models.ForeignKey(Commentable, on_delete=models.RESTRICT, related_name="comments")
     written_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="written_comments")
+
+    def __str__(self) -> str:
+        return self.content if len(self.content) <= 64 else self.content[:61] + "..."
 
 
 class Project(Commentable, Followable):
@@ -154,6 +247,9 @@ class Project(Commentable, Followable):
     related_categories = models.ManyToManyField(Category, blank=True, related_name="related_projects")
     visibility = models.CharField(max_length=16, choices=Visibility.choices, default=Visibility.PRIVATE)
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class Article(Commentable, Versionable):
     """
@@ -170,3 +266,6 @@ class Article(Commentable, Versionable):
     related_tags = models.ManyToManyField(Tag, blank=True, related_name="related_articles")
     related_categories = models.ManyToManyField(Category, blank=True, related_name="related_articles")
     visibility = models.CharField(max_length=16, choices=Visibility.choices, default=Visibility.PRIVATE)
+
+    def __str__(self) -> str:
+        return self.title
