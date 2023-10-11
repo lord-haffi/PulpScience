@@ -73,6 +73,7 @@ class Versionable(models.Model):
                 "commentable_ptr",
                 "followable_id",
                 "followable_ptr",
+                "id",
             )
         }
         fields["version_number"] += 1
