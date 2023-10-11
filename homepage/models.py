@@ -31,21 +31,27 @@ class Visibility(models.TextChoices):
 ModelT = TypeVar("ModelT", bound=models.Model)
 
 
-class GetSubclassesMixin(object):
+# pylint: disable=too-few-public-methods
+class GetSubclassesMixin:
     """
     This mixin provides a method to get all subclasses of the calling class.
     """
 
+    # mypy error:
+    # The erased type of self "Type[django.db.models.base.Model]" is not a supertype of its class
+    # "Type[homepage.models.GetSubclassesMixin]"
+    # Obviously mypy complains about the fact that this mixin is not inheriting from models.Model.
+    # However, this is intended as this mixin is only used by models.Model subclasses.
     @classmethod
-    def get_subclasses(cls: type[ModelT]) -> list[type[ModelT]]:
+    def get_subclasses(cls: type[ModelT]) -> list[type[ModelT]]:  # type: ignore[misc]
         """
         Returns all subclasses of the calling class.
         """
         if not hasattr(cls, "_meta"):
             raise TypeError("This mixin can only be used with classes that derive from Model.")
         content_types = ContentType.objects.filter(app_label=cls._meta.app_label)
-        models = [ct.model_class() for ct in content_types]
-        return [model for model in models if (model is not None and issubclass(model, cls) and model is not cls)]
+        model_classes = [ct.model_class() for ct in content_types]
+        return [model for model in model_classes if (model is not None and issubclass(model, cls) and model is not cls)]
 
 
 VersionableT = TypeVar("VersionableT", bound="Versionable")
@@ -106,9 +112,16 @@ class Versionable(models.Model, GetSubclassesMixin):
         """
         subclasses = self.get_subclasses()
         for subclass in subclasses:
-            matches = subclass.objects.filter(versionable_ptr_id=self.versionable_id)
-            if matches.count() == 1:
-                return f"{subclass.__name__}: {str(matches.first())}"
+            try:
+                matches = subclass.objects.filter(versionable_ptr_id=self.versionable_id)  # type: ignore[misc]
+                # mypy error:
+                # Cannot resolve keyword 'versionable_ptr_id' into field.
+                # Choices are: article, comment, created, version_group, version_number, versionable_id
+                # With the try-except block we make sure that the error is ignored.
+                if matches.count() == 1:
+                    return f"{subclass.__name__}: {str(matches.first())}"
+            except AttributeError:
+                pass
         return f"Versionable: {self.versionable_id}"
 
     class Meta:
@@ -128,9 +141,16 @@ class Commentable(models.Model, GetSubclassesMixin):
         """
         subclasses = self.get_subclasses()
         for subclass in subclasses:
-            matches = subclass.objects.filter(commentable_ptr_id=self.commentable_id)
-            if matches.count() == 1:
-                return f"{subclass.__name__}: {str(matches.first())}"
+            try:
+                matches = subclass.objects.filter(commentable_ptr_id=self.commentable_id)  # type: ignore[misc]
+                # mypy error:
+                # Cannot resolve keyword 'commentable_ptr_id' into field.
+                # Choices are: article, comment, commentable_id, comments, liked_by, project, user
+                # With the try-except block we make sure that the error is ignored.
+                if matches.count() == 1:
+                    return f"{subclass.__name__}: {str(matches.first())}"
+            except AttributeError:
+                pass
         return f"Commentable: {self.commentable_id}"
 
 
@@ -147,9 +167,16 @@ class Followable(models.Model, GetSubclassesMixin):
         """
         subclasses = self.get_subclasses()
         for subclass in subclasses:
-            matches = subclass.objects.filter(followable_ptr_id=self.followable_id)
-            if matches.count() == 1:
-                return f"{subclass.__name__}: {str(matches.first())}"
+            try:
+                matches = subclass.objects.filter(followable_ptr_id=self.followable_id)  # type: ignore[misc]
+                # mypy error:
+                # Cannot resolve keyword 'followable_ptr_id' into field.
+                # Choices are: followable_id, followed_by, project, user
+                # With the try-except block we make sure that the error is ignored.
+                if matches.count() == 1:
+                    return f"{subclass.__name__}: {str(matches.first())}"
+            except AttributeError:
+                pass
         return f"Followable: {self.followable_id}"
 
 
