@@ -7,7 +7,7 @@ permissions:
 jobs:
   dependabot:
     permissions:
-      actions: write
+      # actions: write
       # checks: write
       contents: write
       # security-events: write
