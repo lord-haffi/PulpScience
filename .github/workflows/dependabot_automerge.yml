@@ -7,14 +7,10 @@ permissions:
 jobs:
   dependabot:
     permissions:
-      # actions: write
-      # checks: write
       contents: write
-      # security-events: write
-      # statuses: write
       pull-requests: write
     runs-on: ubuntu-latest
-    # if: ${{ github.actor == 'dependabot[bot]' }}
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Dependabot metadata
         id: metadata
